@@ -37,7 +37,7 @@
                         <ul>
                             <li v-for="(item,index) in list" :key='index'>
                                 <div class="pic">
-                                    <a href="#"><img :src="'/static/img/' + item.productImage" alt=""></a>
+                                    <a href="#"><img v-lazy="'/static/img/' + item.productImage" alt=""></a>
                                 </div>
                                 <div class="main">
                                     <div class="name">{{item.productName}}</div>
@@ -73,14 +73,19 @@ export default {
         Footer
     },
     created(){
-        this.getGoodsList();
+        this.getGoods();
     },
     methods:{
         getGoodsList(){
             axios.get('http://easy-mock.com/mock/59664d4d58618039284c7710/example/goods/list')
             .then(res=>{
                 res = res.data.data;
-                this.list = res;
+                // this.list = res;
+            })
+        },
+        getGoods(){
+            axios.get('/goods').then(res=>{
+                this.list= res.data.data;
             })
         }
     }
