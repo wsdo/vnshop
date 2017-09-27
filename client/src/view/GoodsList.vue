@@ -138,6 +138,7 @@ export default {
         },
         setPriceFilter(index){
             this.priceChecked = index;
+            this.page = 1;
             this.getGoods();
         },
         loadMore: function() {
