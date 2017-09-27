@@ -62,7 +62,7 @@ router.get("/list", function(req, res, next) {
         }
     }
 
-
+    console.log(param);
     let goodModel = Goods.find(param).sort({ 'salePrice': sort });
     goodModel.exec({}, function(err, doc) {
         res.json({ status: 0, result: doc })
