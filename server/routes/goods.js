@@ -17,7 +17,9 @@ mongoose.connection.on('disconnected', function() {
 })
 
 router.get("/list", function(req, res, next) {
-    Goods.find({}, function(err, doc) {
+    let sort = req.param('sort');
+    let goodModel = Goods.find({}).sort({ 'salePrice': sort });
+    goodModel.exec({}, function(err, doc) {
         res.json({ status: 0, result: doc })
     })
 })

@@ -7,7 +7,7 @@
             <div class="filter-nav">
                 <span class="sortby">Sort by:</span>
                 <a href="javascript:void(0)" class="default cur">Default</a>
-                <a href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+                <a href="javascript:void(0)" class="price" @click="sortGoods">价格 <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
                 <a href="javascript:void(0)" class="filterby stopPop">Filter by</a>
             </div>
             <div class="accessory-result">
@@ -65,6 +65,7 @@ export default {
     data(){
         return{
             list:[],
+            sortFlag:true
         }
     },
     components:{
@@ -84,9 +85,15 @@ export default {
             })
         },
         getGoods(){
-            axios.get('/goods').then(res=>{
-                this.list= res.data.data;
+            let sort = this.sortFlag ? 1 : -1;
+            axios.get('/goods/list',{params:{sort:sort}}).then(res=>{
+                this.list= res.data.result;
+                console.log(res.data.result);
             })
+        },
+        sortGoods(){
+            this.sortFlag = !this.sortFlag;
+            this.getGoods();
         }
     }
 }
