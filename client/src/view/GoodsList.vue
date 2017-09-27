@@ -53,13 +53,13 @@
             </div>
         </div>
     </div>
-  <Footer/>
+  <FooterNav/>
   </div>
 </template>
 <script>
 import HeadNav from '@/components/Head'
 import NavBread from '@/components/NavBread'
-import Footer from '@/components/Footer'
+import FooterNav from '@/components/Footer'
 import axios from 'axios'
 export default {
     data(){
@@ -71,7 +71,7 @@ export default {
     components:{
         HeadNav,
         NavBread,
-        Footer
+        FooterNav
     },
     created(){
         this.getGoods();
