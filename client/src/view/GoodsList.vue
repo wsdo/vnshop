@@ -15,7 +15,7 @@
                 <div class="filter stopPop" id="filter">
                     <dl class="filter-price">
                         <dt>价格:</dt>
-                        <dd><a href="javascript:void(0)" :class="{'cur': priceChecked == 'all'}">All</a></dd>
+                        <dd><a href="javascript:void(0)" :class="{'cur': priceChecked == 'all'}" @click="setPriceFilter('all')">All</a></dd>
                         <dd v-for="(price , index) in priceFilter" :key="index" >
                             <a href="javascript:void(0)" @click="setPriceFilter(index)" :class="{'cur': priceChecked == index}">{{price.startPrice}} - {{price.endPrice}}</a>
                         </dd>

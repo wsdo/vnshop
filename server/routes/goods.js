@@ -63,7 +63,15 @@ router.get("/list", function(req, res, next) {
     }
 
     console.log(param);
-    let goodModel = Goods.find(param).sort({ 'salePrice': sort });
+
+    let currentPage = (parseInt(req.param('page')) > 0) ? parseInt(req.param('page')) : 1; //第几页
+    let pagesize = (parseInt(req.param('pagesize')) > 0) ? parseInt(req.param('pagesize')) : 7; //每页显示多少条
+
+    let skip = (currentPage - 1) * pagesize;
+
+    // 数据库一共有17条数据 每页显示8条 第二页 从第九条开始 limit 从第9条起数8条为止 这个8就是limit
+
+    let goodModel = Goods.find(param).sort({ 'salePrice': sort }).skip(skip).limit(pagesize);
     goodModel.exec({}, function(err, doc) {
         res.json({ status: 0, result: doc })
     })
