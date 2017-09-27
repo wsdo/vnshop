@@ -38,6 +38,9 @@
                                     </div>
                                 </div>
                             </li>
+                            <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+                            ...
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -58,6 +61,10 @@ export default {
             list:[],
             sortFlag:true,
             priceChecked:'all',
+            busy: true,
+            page:1,
+            pagesize:8,
+            flag:false,
             priceFilter:[
                 {
                     startPrice:'0',
@@ -87,18 +94,42 @@ export default {
         this.getGoods();
     },
     methods:{
-        getGoodsList(){
-            axios.get('http://easy-mock.com/mock/59664d4d58618039284c7710/example/goods/list')
-            .then(res=>{
-                res = res.data.data;
-                // this.list = res;
-            })
-        },
-        getGoods(){
+        // getGoodsList(){
+        //     axios.get('http://easy-mock.com/mock/59664d4d58618039284c7710/example/goods/list')
+        //     .then(res=>{
+        //         res = res.data.data;
+        //         // this.list = res;
+        //     })
+        // },
+        getGoods(flag){
             let sort = this.sortFlag ? 1 : -1;
-            axios.get('/goods/list',{params:{sort:sort,priceLevel:this.priceChecked}}).then(res=>{
-                this.list= res.data.result;
-                console.log(res.data.result);
+            let param = {
+                sort:sort,
+                priceLevel:this.priceChecked,
+                page:this.page,
+                pagesize:this.pagesize
+            }
+            axios.get('/goods/list',{params:param}).then(result=>{
+                let res = result.data;
+                // this.list= res.data.result;
+                if(flag){ //判断是否通过分页请求
+                    // 分页的数据追加到这个list里面
+                    this.list = this.list.concat(res.result);
+
+                    // 判断当数据加载完了，让数据截停
+                    console.log(res.result.length);
+                    if(res.result.length == 0){
+                        this.busy = true;
+                        console.log(this.busy);
+                    }else{
+                        this.busy = false;
+                    }
+                }else{
+                    // 第一次请求
+                    this.list = res.result;
+                    this.busy = false;
+                }
+                console.log(res.result);
             })
         },
         sortGoods(){
@@ -108,7 +139,16 @@ export default {
         setPriceFilter(index){
             this.priceChecked = index;
             this.getGoods();
+        },
+        loadMore: function() {
+            this.busy = true;
+            setTimeout(() => {
+                // console.log(1111);
+                this.page++;
+                this.getGoods(true);
+            }, 500);
         }
+  
     }
 }
 </script>

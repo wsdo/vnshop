@@ -6,6 +6,10 @@ import router from './router'
 import '@/assets/css/app'
 import VueLazyLoad from 'vue-lazyload'
 
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
+
+
 Vue.use(VueLazyLoad, {
     loading: '/static/img/ok-2.png'
 })

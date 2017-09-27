@@ -65,7 +65,7 @@ router.get("/list", function(req, res, next) {
     console.log(param);
 
     let currentPage = (parseInt(req.param('page')) > 0) ? parseInt(req.param('page')) : 1; //第几页
-    let pagesize = (parseInt(req.param('pagesize')) > 0) ? parseInt(req.param('pagesize')) : 7; //每页显示多少条
+    let pagesize = (parseInt(req.param('pagesize')) > 0) ? parseInt(req.param('pagesize')) : 8; //每页显示多少条
 
     let skip = (currentPage - 1) * pagesize;
 
