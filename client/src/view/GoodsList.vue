@@ -48,12 +48,36 @@
         </div>
     </div>
   <FooterNav/>
+
+    <!-- 在未登录的情况下 -->
+    <modal :mdShow="mdShow">
+        <p slot="message">请先登陆，否则无法加入购物车</p>
+        <div slot="btnGroup">
+            <a href="javascipt:;" class="btn-login" @click="mdShow = false">
+                关闭</a>
+        </div>
+    </modal>
+
+    <!-- 在登录的情况下 -->
+    <modal :mdShow="mdShowCart">
+        <p slot="message">加入购物车成功</p>
+        <div slot="btnGroup">
+            <a href="javascipt:;" class="btn--m" @click="mdShow = false">
+                继续购物</a>
+            <router-link class="btn btn-m" to="/cart">
+            查看购物车</router-link>
+        </div>
+    </modal>
+
   </div>
 </template>
 <script>
 import HeadNav from '@/components/Head'
 import NavBread from '@/components/NavBread'
 import FooterNav from '@/components/Footer'
+import Modal from '@/components/Modal'
+import jsonp from 'jsonp'
+
 // import axios from 'axios'
 export default {
     data(){
@@ -65,6 +89,8 @@ export default {
             page:1,
             pagesize:8,
             flag:false,
+            mdShow:false,
+            mdShowCart:false,
             priceFilter:[
                 {
                     startPrice:'0',
@@ -88,10 +114,12 @@ export default {
     components:{
         HeadNav,
         NavBread,
-        FooterNav
+        FooterNav,
+        Modal
     },
     created(){
         this.getGoods();
+        this.jsonps();
     },
     methods:{
         // getGoodsList(){
@@ -156,10 +184,17 @@ export default {
             }).then((result)=>{
                 let res = result.data;
                 if(res.status == 1){
-                     alert('加入购物车失败！')
+                    this.mdShow = true;
+                    //  alert('加入购物车失败！')
                 }else{
-                    alert('加入购物车成功！')
+                    // alert('加入购物车成功！')
+                    this.mdShowCart = true;
                 }
+            })
+        },
+        jsonps:function(){
+            jsonp('https://api-m.mtime.cn/PageSubArea/HotPlayMovies.api?locationId=290',{param:'cb'},function(data){
+                console.log(data);
             })
         }
   
