@@ -54,7 +54,7 @@
 import HeadNav from '@/components/Head'
 import NavBread from '@/components/NavBread'
 import FooterNav from '@/components/Footer'
-import axios from 'axios'
+// import axios from 'axios'
 export default {
     data(){
         return{
@@ -109,7 +109,8 @@ export default {
                 page:this.page,
                 pagesize:this.pagesize
             }
-            axios.get('/goods/list',{params:param}).then(result=>{
+
+            this.$http.get('/goods/list',{params:param}).then(result=>{
                 let res = result.data;
                 // this.list= res.data.result;
                 if(flag){ //判断是否通过分页请求
@@ -150,7 +151,7 @@ export default {
             }, 500);
         },
         addCart:function(productId){
-            axios.post("/goods/addCart",{
+            this.$http.post("/goods/addCart",{
                 productId:productId
             }).then((result)=>{
                 let res = result.data;
