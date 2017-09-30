@@ -119,7 +119,7 @@ export default {
     },
     created(){
         this.getGoods();
-        this.jsonps();
+        // this.jsonps();
     },
     methods:{
         // getGoodsList(){

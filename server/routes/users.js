@@ -114,7 +114,7 @@ router.post('/cartEdit', function(req, res, next) {
     })
 })
 
-router.post('editCheckAll', function(req, res, next) {
+router.post('/editCheckAll', function(req, res, next) {
     let userId = req.cookies.userId,
         checkAll = req.body.checkAll;
 

@@ -68,12 +68,12 @@
             <div class="cart-foot-wrap">
                 <div class="cart-foot-inner">
                     <div class="cart-foot-l">
-                        <div class="item-all-check">
-                            <a href="javascipt:;">
-                                <span class="checkbox-btn item-check-btn">
-                      <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
+                        <div class="item-all-check"  >
+                            <a href="javascipt:;" @click="toggleCheckAll">
+                                <span class="checkbox-btn item-check-btn" v-bind:class="{'check':checkAllFlag}">
+                      <svg class="icon icon-ok" ><use xlink:href="#icon-ok"/></svg>
                   </span>
-                                <span>Select all</span>
+                                <span >Select all</span>
                             </a>
                         </div>
                     </div>
@@ -102,7 +102,7 @@ export default {
     data(){
         return{
             cartList:'',
-            checked:'',
+            checked:''
         }
     },
     computed:{
