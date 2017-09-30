@@ -191,12 +191,12 @@ export default {
                     this.mdShowCart = true;
                 }
             })
-        },
-        jsonps:function(){
-            jsonp('https://api-m.mtime.cn/PageSubArea/HotPlayMovies.api?locationId=290',{param:'cb'},function(data){
-                console.log(data);
-            })
         }
+        // jsonps:function(){
+        //     jsonp('https://api-m.mtime.cn/PageSubArea/HotPlayMovies.api?locationId=290',{param:'cb'},function(data){
+        //         console.log(data);
+        //     })
+        // }
   
     }
 }

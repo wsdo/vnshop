@@ -113,6 +113,7 @@ router.post('/addCart', function(req, res, next) {
                 console.log(goodDoc);
                 console.log(productId);
                 goodDoc.productNum = 1;
+                goodDoc.checked = 1;
                 // 此时去查询这个商品是否存在于用户购物车列表里面
 
                 userDoc.cartList.push(goodDoc);
