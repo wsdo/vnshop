@@ -144,4 +144,37 @@ router.post('/editCheckAll', function(req, res, next) {
         }
     })
 })
+
+router.post('/cartDel', function(req, res, next) {
+    var userId = req.cookies.userId,
+        productId = req.body.productId;
+    User.update({
+        userId: userId //确定的条件
+    }, {
+        // 操作的事情
+        $pull: {
+            'cartList': {
+                'productId': productId
+            }
+        }
+    }, function(err, doc) {
+        if (err) {
+            res.json({ status: 1, msg: err.message, result: '' })
+        } else {
+            res.json({ status: 0, msg: '', result: '商品删除成功' })
+        }
+    })
+})
+
+router.get('/addressList', function(req, res, next) {
+    var userId = req.cookies.userId;
+    User.findOne({ userId: userId }, function(err, doc) {
+        if (err) {
+            res.json({ status: 1, msg: err.message, result: '' })
+        } else {
+            res.json({ status: 0, msg: '', result: doc.addressList })
+        }
+    })
+})
+
 module.exports = router;
