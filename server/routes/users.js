@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+require('./../util/util');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -177,4 +178,132 @@ router.get('/addressList', function(req, res, next) {
     })
 })
 
+router.post("/setDefault", function(req, res, next) {
+    var userId = req.cookies.userId,
+        addressId = req.body.addressId;
+    if (!addressId) {
+        res.json({
+            status: '1003',
+            msg: 'addressId is null'
+        })
+    } else {
+        User.findOne({ userId: userId }, function(err, doc) {
+
+            var addressList = doc.addressList;
+            addressList.forEach((item) => {
+                if (item.addressId == addressId) {
+                    item.isDefault = true;
+                } else {
+                    item.isDefault = false;
+                }
+            })
+
+            doc.save(function(err1, doc1) {
+                if (err1) {
+                    res.json({
+                        status: '1',
+                        msg: err.message,
+                        result: ''
+                    })
+                } else {
+                    res.json({
+                        status: '0',
+                        msg: '',
+                        result: doc1
+                    })
+                }
+            })
+        })
+    }
+})
+
+router.post("/payMent", function(req, res, next) {
+    var userId = req.cookies.userId,
+        addressId = req.body.addressId,
+        orderTotal = req.body.orderTotal;
+    User.findOne({ userId: userId }, function(err, doc) {
+        if (err) {
+            res.json({
+                status: '1',
+                msg: err.message,
+                result: ''
+            })
+        } else {
+            var address = '',
+                goodsList = [];
+            // 获取当前用户的地址信息
+            doc.addressList.forEach((item) => {
+                if (item.addressId == addressId) {
+                    address = item;
+                }
+            })
+
+            // 获取用户购物车，项购买的商品
+
+            doc.cartList.filter((item) => {
+                if (item.checked == '1') {
+                    goodsList.push(item);
+                }
+            })
+
+            var platform = '622';
+            var r1 = Math.floor(Math.random() * 10);
+            var r2 = Math.floor(Math.random() * 10);
+            var sysDate = new Date().Format('yyyyMMddhhmmss');
+
+            var orderId = platform + r1 + sysDate + r2;
+            var createData = new Date().Format('yyyy-MM-dd hh:mm:ss');
+
+            var order = {
+                orderId: orderId,
+                orderTotal: orderTotal,
+                addressInfo: address,
+                goodsList: goodsList,
+                orderStatus: '10',
+                createData: createData
+            }
+
+            doc.orderList.push(order);
+            doc.save(function(err1, doc1) {
+                if (err1) {
+                    res.json({ 'status': "1", msg: err.message, result: '' })
+                } else {
+                    res.json({ 'status': "0", msg: '', result: { orderId: order.orderId, orderTotal: orderTotal } })
+                }
+            })
+        }
+    })
+})
+
+router.get("/orderDetail", function(req, res, next) {
+    var userId = req.cookies.userId,
+        orderId = req.param("orderId");
+    User.findOne({ userId: userId }, function(err, userInfo) {
+        if (err) {
+            res.json({ 'status': "1", msg: err.message, result: '' })
+        } else {
+            var orderList = userInfo.orderList;
+            if (orderList.length > 0) {
+                var orderTotal = 0;
+                orderList.forEach((item) => {
+                    if (item.orderId == orderId) {
+                        orderTotal = item.orderTotal;
+                    }
+                })
+                if (orderTotal > 0) {
+                    res.json({
+                        status: '0',
+                        msg: '',
+                        result: {
+                            orderId: orderId,
+                            orderTotal: orderTotal
+                        }
+                    })
+                }
+            } else {
+                res.json({ status: '1010', msg: "当前用户未创建订单", result: '' })
+            }
+        }
+    })
+})
 module.exports = router;

@@ -53,7 +53,7 @@
     <modal :mdShow="mdShow">
         <p slot="message">请先登陆，否则无法加入购物车</p>
         <div slot="btnGroup">
-            <a href="javascipt:;" class="btn-login" @click="mdShow = false">
+            <a href="javascipt:;" class="btn-login" @click="mdShowCart = false">
                 关闭</a>
         </div>
     </modal>
@@ -62,9 +62,9 @@
     <modal :mdShow="mdShowCart">
         <p slot="message">加入购物车成功</p>
         <div slot="btnGroup">
-            <a href="javascipt:;" class="btn--m" @click="mdShow = false">
+            <a href="javascipt:;" class="btn btn--m" @click="mdShowCart = false">
                 继续购物</a>
-            <router-link class="btn btn-m" to="/cart">
+            <router-link class="btn btn--m" to="/cart">
             查看购物车</router-link>
         </div>
     </modal>

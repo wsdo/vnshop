@@ -5,6 +5,8 @@ import GoodsList from '@/view/GoodsList'
 import User from '@/view/user/index'
 import Cart from '@/view/cart'
 import Address from '@/view/address'
+import OrderConfirm from '@/view/orderConfirm'
+import OrderSuccess from '@/view/OrderSuccess'
 
 Vue.use(Router)
 
@@ -21,6 +23,14 @@ export default new Router({
         {
             path: '/address',
             component: Address
+        },
+        {
+            path: '/orderConfirm',
+            component: OrderConfirm
+        },
+        {
+            path: '/orderSuccess',
+            component: OrderSuccess
         },
         {
             path: '/user/:stark?/:xiaorong?', //?代表可写，也可以不写 /user/1
